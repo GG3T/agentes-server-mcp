@@ -1,0 +1,33 @@
+# Server configuration
+server:
+  port: 8080
+spring:
+  application:
+  name: agentes-server-mcp
+
+  main:
+    allow-bean-definition-overriding: true
+
+  ai:
+    mcp:
+      server:
+        enabled: true
+        stdio: false
+        name: sse-mcp-server-demo
+        version: 1.0.0
+        resource-change-notification: true
+        tool-change-notification: true
+        prompt-change-notification: true
+        sse-endpoint: /api/v1/sse
+        sse-message-endpoint: /mcp/message
+        type: sync
+        capabilities:
+          completion: true
+          prompt: true
+          resource: true
+          tool: true
+
+logging:
+  level:
+    io.modelcontextprotocol: TRACE
+    org.springframework.ai.mcp: TRACE
