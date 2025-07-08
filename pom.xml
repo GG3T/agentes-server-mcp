@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.chatgm</groupId>
 	<artifactId>agents-server-mcp</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.11</version>
 	<name>agents-server-mcp</name>
 	<description>Servidor MCP com SSE</description>
 	<properties>

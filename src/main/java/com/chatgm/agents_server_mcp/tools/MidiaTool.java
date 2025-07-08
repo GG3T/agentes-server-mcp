@@ -20,14 +20,13 @@ public class MidiaTool {
     @Autowired
     private SessionContext sessionContext;
 
-    @Tool(description = "Tool responsavel por enviar video sobre clincia para o cliente e imagem valores sobre o clube botox. e video sobre a consulta ESTETICA\n" +
+    @Tool(description = "Tool responsavel por enviar video sobre a clinica \n" +
             "\n" +
-            "Enum : CAPILAR,CLUBEBOTOX,ESTETICA.\n" +
+            "Enum : CAPILAR,ESTETICA.\n" +
             "\n" +
             "Sobre consulta capilar = CAPILAR\n" +
-            "documento com informações de orçamento sobre clube botox = CLUBEBOTOX\n" +
             "Estetica ou plano de envelhecimento, enviar o video = ESTETICA")
-    public String sendVideo(@ToolParam(description = "ENUM: VIDEO,CLUBEBOTOX,ESTETICA") String tipoDeEnvio) {
+    public String sendVideo(@ToolParam(description = "ENUM: VIDEO,ESTETICA") String tipoDeEnvio) {
         
         logger.info("Executando MidiaTool - Tipo de envio: {}", tipoDeEnvio);
         
@@ -51,6 +50,39 @@ public class MidiaTool {
                                     number != null ? number : "N/A",
                                     tipoDeEnvio);
         
+        logger.info("Resultado: {}", result);
+        return result;
+    }
+
+    @Tool(description = "Tool responsavel por enviar pdf e informçaões e valores sobre o clube botox.\n" +
+            "\n" +
+            "Enum : BOTOX.\n" +
+            "\n" +
+            "documento com informações de orçamento sobre clube botox = BOTOX\n" )
+    public String sendDocumento(@ToolParam(description = "ENUM: BOTOX ") String tipoDeEnvio) {
+
+        logger.info("Executando MidiaTool - Tipo de envio: {}", tipoDeEnvio);
+
+        // Obtém headers da sessão
+        String instance = sessionContext.getCurrentInstance();
+        String number = sessionContext.getCurrentNumber();
+
+        logger.info("Sessão ativa: {}", sessionContext.getSessionInfo());
+
+        // Valida se existe pelo menos um header
+        if (!sessionContext.hasActiveSession()) {
+            String errorMsg = "Headers 'instance' ou 'number' são obrigatórios para enviar vídeos";
+            logger.error(errorMsg);
+            throw new RuntimeException(errorMsg);
+        }
+
+        enviarMidiaService.sendMidia(tipoDeEnvio);
+
+        String result = String.format("✅ Documento sobre Botox Enviado com sucesso- Instance: %s, Number: %s, Tipo: %s",
+                instance != null ? instance : "N/A",
+                number != null ? number : "N/A",
+                tipoDeEnvio);
+
         logger.info("Resultado: {}", result);
         return result;
     }
